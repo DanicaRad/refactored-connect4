@@ -4,44 +4,34 @@
   <link href="style.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="heading">
+  <!-- <div class="heading">
+    <div class="connect">CONNECT</div>
+    <div class="four">4</div>
+  </div> -->
+  <form name="player-inputs" action="" id="start-game">
+    <label id="input-label">Choose your color and play the Connect4-bot!</label>
+    <div>
+        <button id="play">Play!</button>
+    </div>
+    
+    <div  id="inputs">
+        <!-- <label id="input-label">Choose your color and play the Connect4-bot!</label> -->
+        <button id="add-player">+ Add Player</button>
+
+        <input type="text" id="player1-input">
+        <input type="text" name="" id="player2-input">
+    </div>
+    <!-- <button id="play">Play!</button> -->
+</form>
+<div class="heading">
     <div class="connect">CONNECT</div>
     <div class="four">4</div>
   </div>
 
-  <form name="player-inputs" action="get-player-colors" id="start-game">
-    <div>
-        <!-- <button id="add-player">+ ➕</button> -->
-    </div>
-    <div class ="input1">
-        <label for="">Player 1, choose your color!</label>
-        <input type="text" name="input" id="player1-input">
-    </div>
-    
-    <div class="input2">
-    <label for="">Player 2, choose your color!</label>
-        <input type="text" name="" id="player2-input">
-    </div>
-    <button id="play">Play!</button>
-</form>
-
 <div id="game">
-    <!-- <form name="player-inputs" action="get-player-colors">
-
-        <div class ="input1">
-            <label for="">Player 1, choose your color!</label>
-            <input type="text" name="" id="player1-input">
-        </div>
-        
-        <div class="input2">
-        <label for="">Player 2, choose your color!</label>
-            <input type="text" name="" id="player2-input">
-        </div>
-        <button>Play!</button>
-    </form> -->
   
   <table id="board"></table>
 </div>

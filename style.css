@@ -3,36 +3,71 @@ body {
     font-family: poppins;
 }
 
+.heading {
+ display: inline-flex;
+ width: fit-content;
+ flex-direction: row-reverse;
+ font-family: poppins;
+ font-size: 50px;
+ font-weight: 700px;
+ margin: 50px 0px 30px 70px;
+ justify-content: right;
+ }
+  
+.connect {
+ color: white;
+ background-color: black;
+ border: 10px double white;
+ border-radius: 30px 0px 0px 30px;
+ border-right: 6px solid black;
+ padding: 3px 0px 3px 7px;
+ position: relative;
+ top: 5px;
+ left: 235px;
+ bottom: 8px;
+ /* bottom: 50px; */
+ /* transform: translateX(-49px); */
+ z-index: 1;
+ }
+  
+.four {
+ font-size: 90px;
+ font-weight: 900;
+ color: red;
+ -webkit-text-stroke: 5px white;
+ background-color: black;
+ padding-right: 10px;
+ border: 10px double white;
+ border-radius: 30px;
+ position: absolute;
+ right: 200px;
+}
+
 form {
-    display: flex;
-    margin: 30px auto;
-    justify-content: center;
+    display: inline-flex;
+    flex-direction: column;
+    width: max-content;
+    margin: 30px;
+    justify-content: flex-end;
     align-items: flex-end;
 }
 
 input, label {
-    display: block;
+    /* display: block; */
+    margin-right: 15px;
 }
 
 input {
     padding: 5px 65px 5px 5px;
-}
-
-.input1 {
-    float: left;
-    margin-right: 20px;
-}
-
-.input2{
-    float: left;
+    margin: 5px;
 }
 
 button {
     /* display: block; */
     align-items: center;
     height: 100%;
-    margin-left: 15px;
-    margin-right: 15px;
+    /* margin-left: 15px; */
+    /* margin-right: 15px; */
     font-family: poppins;
     color: white;
     background-color: red;
@@ -47,7 +82,10 @@ button:hover {
 #add-player {
     color: white;
     background-color: black;
-    font-weight: 800;
+}
+
+#add-player:hover {
+    background-color: rgb(45, 39, 39);
 }
   
 #game {
@@ -78,12 +116,13 @@ button:hover {
  }
   
 .heading {
- display: flex;
+ display: inline-flex;
+ width: fit-content;
  font-family: poppins;
  font-size: 50px;
  font-weight: 700px;
  margin: 30px;
- justify-content: center;
+ justify-content: right;
  }
   
 .connect {
@@ -94,7 +133,7 @@ button:hover {
  border-right: 6px solid black;
  padding: 3px 0px 3px 7px;
  position: relative;
- transform: translateX(-49px);
+ /* transform: translateX(-49px); */
  margin-top: 10px;
  z-index: 1;
  }

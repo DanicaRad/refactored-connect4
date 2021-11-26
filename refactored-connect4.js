@@ -167,12 +167,20 @@ class Player {
     this.color = color;
   }
 }
-
+let numOfPlayers = 1;
 const form = document.getElementById('start-game');
 form.addEventListener('click', (evt) => {
   evt.preventDefault();
   if(evt.target.id = 'add-player') {
-    numOfPlayers = evt;
+    numOfPlayers++;
+    const newPlayer = document.createElement('input');
+    const playerInputs = document.getElementById('inputs');
+    const inputLabel = document.getElementById('input-label');
+    inputLabel.innerText = 'Choose player colors and add more players!';
+
+    newPlayer.setAttribute('type', 'text');
+    newPlayer.id = numOfPlayers;
+    playerInputs.appendChild(newPlayer);
   }
   if(evt.target.id = 'play') {
     let player1;
