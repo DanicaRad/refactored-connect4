@@ -5,7 +5,7 @@ body {
 
 form {
     display: flex;
-    margin: 50px auto;
+    margin: 30px auto;
     justify-content: center;
     align-items: flex-end;
 }
@@ -15,7 +15,7 @@ input, label {
 }
 
 input {
-    padding: 5px 70px 5px 0px;
+    padding: 5px 65px 5px 5px;
 }
 
 .input1 {
@@ -32,22 +32,29 @@ button {
     align-items: center;
     height: 100%;
     margin-left: 15px;
+    margin-right: 15px;
     font-family: poppins;
     color: white;
     background-color: red;
     border: none;
-    padding: 5px 10px;
+    padding: 4px 10px;
 }
 
 button:hover {
     background-color: rgb(250, 101, 101);
 }
+
+#add-player {
+    color: white;
+    background-color: black;
+    font-weight: 800;
+}
   
 #game {
  width: 100%;;
-display: flex;
-justify-content: space-around;
-margin-top: 60px;
+ display: flex;
+ justify-content: space-around;
+ margin-top: 30px;
 }
   
 #board {
@@ -56,7 +63,7 @@ margin-top: 60px;
 
 #board td {
  position: relative;
-  width: 50px;
+ width: 50px;
  height: 50px;
  border: solid 5px yellow;
 }
@@ -72,7 +79,7 @@ margin-top: 60px;
   
 .heading {
  display: flex;
-  font-family: poppins;
+ font-family: poppins;
  font-size: 50px;
  font-weight: 700px;
  margin: 30px;
@@ -103,8 +110,8 @@ margin-top: 60px;
  border-radius: 30px;
  position: absolute;
  transform: translateX(123px);
-margin-top: 10px;
-top: 2.5px;
+ margin-top: 10px;
+ top: 2.5px;
 }
   /* pieces are div within game table cells: draw as colored circles */
   
@@ -115,26 +122,14 @@ div.piece {
   
 .played-piece {
 /* TODO: make into circles */
-position: absolute;
-margin: 5px;
-width: 80%;
-height: 80%;
-border-radius: 50%;
-bottom: 400px;
-transition: ease-in bottom .7s;
- }
-  
-.player2 {
-  /* TODO: make into circles */
  position: absolute;
  margin: 5px;
  width: 80%;
  height: 80%;
  border-radius: 50%;
- background-color: blue;
  bottom: 400px;
  transition: ease-in bottom .7s;
-}
+ }
   
 @keyframes bounce {
  from {

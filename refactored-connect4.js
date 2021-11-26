@@ -16,14 +16,19 @@
 // console.log(player1);
 
 class Game {
-  constructor(color1 = red, color2 = blue, width = 7, height = 6) {
-    this.player1 = color1;
-    this.player2 = color2;
-    this.currPlayer = this.player1;
+  constructor(width = 7, height = 6, numPlayers, ... colors) {
+    console.log([... colors]);
+    this.players = [... colors];
+    // this.player2 = color2;
+    this.currPlayer = this.players[0];
     this.width = width;
     this.height = height;
     this.makeBoard();
     this.makeHtmlBoard();
+  }
+
+  makeRandomColor() {
+    return '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
   }
 
   makeBoard() {
@@ -124,7 +129,7 @@ class Game {
   
 
     this.currPlayer = 
-    this.currPlayer === this.player1 ? this.player2 : this.player1;
+    this.currPlayer === this.players[0] ? this.players[1] : this.players[0];
   
   }
 
@@ -166,18 +171,21 @@ class Player {
 const form = document.getElementById('start-game');
 form.addEventListener('click', (evt) => {
   evt.preventDefault();
-  if(evt.target.tagName === 'BUTTON') {
+  if(evt.target.id = 'add-player') {
+    numOfPlayers = evt;
+  }
+  if(evt.target.id = 'play') {
     let player1;
     let player2;
     if(!document.getElementById('player1-input').value) {
-      player1 = new Player('red');
+      player1 = new Player('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
     }
     else {
       player1 = new Player(document.getElementById('player1-input').value);
     }
     
     if(!document.getElementById('player2-input').value) {
-      player2 = new Player('blue');
+      player2 = new Player('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
     }
     else {
       player2 = new Player(document.getElementById('player2-input').value);
