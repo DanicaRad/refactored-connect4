@@ -16,17 +16,16 @@
 // console.log(player1);
 
 class Game {
-  constructor(width = 7, height = 6, numPlayers, ... colors) {
-    console.log([... colors]);
-    this.players = [... colors];
-    // this.player2 = color2;
+  constructor(...colors) {
+    this.players = [...colors];
+    console.log("this.players", this.players);
     this.currPlayer = this.players[0];
-    this.width = width;
-    this.height = height;
+    this.width = 7;
+    this.height = 6;
     this.makeBoard();
     this.makeHtmlBoard();
   }
-
+  
   makeRandomColor() {
     return '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
   }
@@ -39,6 +38,8 @@ class Game {
   }
 
   makeHtmlBoard() {
+    const form = document.getElementById('game-form');
+    form.innerHTML = '';
       const htmlBoard = document.getElementById('board');
       const top = document.createElement("tr");
       top.setAttribute("id", "column-top");
@@ -77,7 +78,7 @@ class Game {
       const piece = document.createElement('div');
       piece.classList.add('played-piece');
       // piece.classList.add(`this.currPlayer`);
-      console.log('currplayer', this.currPlayer.color);
+      // console.log('currplayer', this.currPlayer.color);
       piece.style.backgroundColor = this.currPlayer.color;
       const square = document.getElementById(`${y}-${x}`);
       square.append(piece);
@@ -91,10 +92,13 @@ class Game {
   }
 
   handleClick(evt) {
- 
+
     // get x from ID of clicked cell
     let x = parseInt(evt.target.id);
   
+    let playerIdx = this.players.indexOf(this.currPlayer);
+    console.log('this.players at click', this.players)
+    console.log('playerIdx', playerIdx);
   
     // get next spot in column (if none, ignore click)
     const y = this.findSpotForCol(x);
@@ -126,11 +130,12 @@ class Game {
     if (this.board.every(row => row.every(cell => cell))) {
       return this.endGame('It`s a tie!');
     }
-  
 
     this.currPlayer = 
-    this.currPlayer === this.players[0] ? this.players[1] : this.players[0];
-  
+    playerIdx === this.players.length -1 ? this.players[0] : this.players[playerIdx + 1];
+
+    console.log("currPlayer", this.currPlayer);
+
   }
 
   checkForWin() {
@@ -168,41 +173,57 @@ class Player {
   }
 }
 let numOfPlayers = 1;
-const form = document.getElementById('start-game');
-form.addEventListener('click', (evt) => {
+const addPlayer = document.getElementById('add-player');
+addPlayer.addEventListener('click', (evt) => {
   evt.preventDefault();
   if(evt.target.id = 'add-player') {
     numOfPlayers++;
     const newPlayer = document.createElement('input');
-    const playerInputs = document.getElementById('inputs');
+    newPlayer.setAttribute('type', 'text');
+    newPlayer.id = `color${numOfPlayers}`;
+
+    const playerInputs = document.getElementById('player-inputs');
+    playerInputs.appendChild(newPlayer);
     const inputLabel = document.getElementById('input-label');
     inputLabel.innerText = 'Choose player colors and add more players!';
+    console.log('num of players', numOfPlayers);
 
-    newPlayer.setAttribute('type', 'text');
-    newPlayer.id = numOfPlayers;
-    playerInputs.appendChild(newPlayer);
+    // newPlayer.setAttribute('type', 'text');
+    // newPlayer.id = `player${numOfPlayers}-input`;
+    // playerInputs.append(newPlayer);
   }
-  if(evt.target.id = 'play') {
+  
+});
+
+const play = document.getElementById('play');
+play.addEventListener('click', (evt) => { 
+  evt.preventDefault();
+  // console.log('evtID', evt.target.id);
     let player1;
     let player2;
-    if(!document.getElementById('player1-input').value) {
-      player1 = new Player('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
+    //for loop to collect player color inputs
+    let playerColors = [];
+    for(let i = 1; i <= numOfPlayers; i++) {
+      // console.log('input value', input[i].value);
+      playerColors.push(new Player(document.getElementById(`color${i}`).value));
     }
-    else {
-      player1 = new Player(document.getElementById('player1-input').value);
-    }
+    // if(!document.getElementById('player1-input').value) {
+    //   player1 = new Player('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
+    // }
+    // else {
+    //   player1 = new Player(document.getElementById('player1-input').value);
+    // }
     
-    if(!document.getElementById('player2-input').value) {
-      player2 = new Player('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
-    }
-    else {
-      player2 = new Player(document.getElementById('player2-input').value);
-    }
-    // player1 = new Player(document.getElementById('player1-input').value);
-    // player2 = new Player(document.getElementById('player2-input').value);
-    console.log('players', player1, player2);
+    // if(!document.getElementById('player2-input').value) {
+    //   player2 = new Player('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
+    // }
+    // else {
+    //   player2 = new Player(document.getElementById('player2-input').value);
+    // }
+    // // player1 = new Player(document.getElementById('player1-input').value);
+    // // player2 = new Player(document.getElementById('player2-input').value);
+    // console.log('players', player1, player2);
 
-    new Game(player1, player2);
-  }
+    new Game(...playerColors);
 })
 
