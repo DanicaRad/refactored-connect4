@@ -4,30 +4,49 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
-//  const WIDTH = 7;
-//  const HEIGHT = 6;
- 
-//  let currPlayer = 1; // active player: 1 or 2
-//  let board = []; // array of rows, each row is array of cells  (board[y][x])
-
-
-
-// const player1 = new Player(document.getElementById("player1-input").input);
-// console.log(player1);
 
 class Game {
-  constructor(...colors) {
-    this.players = [...colors];
-    console.log("this.players", this.players);
-    this.currPlayer = this.players[0];
-    this.width = 7;
-    this.height = 6;
+  constructor(width, height, botPlayer, ...colors) {
+    this.players = !botPlayer ? [...colors] : [botPlayer, ...colors];
+    console.log('this.player', this.players);
+    this.currPlayer = !botPlayer ? this.players[0] : this.players[1];
+    this.botPlayer = botPlayer; 
+    this.width = width;
+    this.height = height;
     this.makeBoard();
     this.makeHtmlBoard();
   }
   
   makeRandomColor() {
     return '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+  }
+
+  changePlayers(player) {
+    let playerIdx = this.players.indexOf(this.currPlayer);
+    if(!this.botPlayer) {
+      console.log('no bot');
+      if(playerIdx === this.players.length -1) {
+        console.log('back to first player');
+        return this.players[0];
+      }
+      console.log('next player');
+      return this.players[playerIdx + 1];
+    }
+    if(player === this.botPlayer) {
+      console.log('bot just played');
+      return this.players[1];
+    }
+    return this.botPlayer;
+  }
+
+  changePlayers(player) {
+    let playerIdx = this.players.indexOf(this.currPlayer);
+    if(playerIdx === this.players.length -1) {
+      console.log('back to first player');
+      return this.players[0];
+    }
+      console.log('next player');
+      return this.players[playerIdx + 1];
   }
 
   makeBoard() {
@@ -41,6 +60,7 @@ class Game {
     const form = document.getElementById('game-form');
     form.innerHTML = '';
       const htmlBoard = document.getElementById('board');
+
       const top = document.createElement("tr");
       top.setAttribute("id", "column-top");
       this.handleGameClick = this.handleClick.bind(this);
@@ -80,6 +100,7 @@ class Game {
       // piece.classList.add(`this.currPlayer`);
       // console.log('currplayer', this.currPlayer.color);
       piece.style.backgroundColor = this.currPlayer.color;
+      console.log('bckg color', piece.style.backgroundColor);
       const square = document.getElementById(`${y}-${x}`);
       square.append(piece);
       console.log('piece from placeInTable', piece);
@@ -94,11 +115,11 @@ class Game {
   handleClick(evt) {
 
     // get x from ID of clicked cell
-    let x = parseInt(evt.target.id);
   
+    
+    let x = parseInt(evt.target.id);
+
     let playerIdx = this.players.indexOf(this.currPlayer);
-    console.log('this.players at click', this.players)
-    console.log('playerIdx', playerIdx);
   
     // get next spot in column (if none, ignore click)
     const y = this.findSpotForCol(x);
@@ -131,12 +152,67 @@ class Game {
       return this.endGame('It`s a tie!');
     }
 
-    this.currPlayer = 
-    playerIdx === this.players.length -1 ? this.players[0] : this.players[playerIdx + 1];
 
-    console.log("currPlayer", this.currPlayer);
+    // switch player if two or more players
+    // this.currPlayer = 
+    // playerIdx === this.players.length -1 ? this.players[0] : this.players[playerIdx + 1];
+
+    // figure out if theres bot, 
+    this.currPlayer = this.changePlayers(this.currPlayer);
+    console.log('currPlayer', this.currPlayer);
+
+    this.playBot();
 
   }
+
+  // playBot() {
+  //   if(this.currPlayer === this.botPlayer) { 
+  //     console.log('now bot is playing!');
+  //     let x = this.botPlayer.pickColForBot(this.width);
+  //     // const automateBotPlay = this.handleClick.bind((this.botPlayer.pickColForBot.bind(this.width)));
+  //     const bindThis = this.handleClick.bind(this);
+  //     const automateBotPlay = bindThis.bind(this.playBot)
+  //     console.log('automateBotPlay', automateBotPlay);
+  //     window.addEventListener('animationend', this.automateBotPlay);
+  //   }
+  //   return;
+  // }
+
+  // play bot take 2
+  // playBot() {
+  //   if(this.currPlayer === this.botPlayer) { 
+  //     console.log('now bot is playing!');
+  //     let x = this.botPlayer.pickColForBot(this.width);
+  //     // const bindThis = this.handleClick.bind(this);
+  //     window.addEventListener('animationend', () => this.handleClick(x));
+  //   }
+  //   return;
+  // }
+
+  // last try
+  playBot() {
+    window.addEventListener('animationend', () => {
+      if(this.currPlayer === this.botPlayer) {
+        console.log('now bot is playing!');
+        let botX = this.botPlayer.pickColForBot(this.width);
+        document.getElementById(botX).click();
+        // this.handleClick(x);
+      }
+      return;
+    });
+  }
+
+  // this works but it keeps playing bot
+  // playBot() {
+  //   window.addEventListener('animationend', () => {
+  //     if(this.currPlayer === this.botPlayer) {
+  //       console.log('now bot is playing!');
+  //       let x = this.botPlayer.pickColForBot(this.width);
+  //       this.handleClick(x);
+  //     }
+  //     return;
+  //   });
+  // }
 
   checkForWin() {
     // make sure win is on board
@@ -167,11 +243,24 @@ class Game {
     }
   }
 }
+
 class Player {
   constructor(color) {
     this.color = color;
   }
 }
+
+class BotPlayer {
+  constructor(width) {
+    this.color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+  }
+
+  pickColForBot(width) {
+    return Math.floor(Math.random() * width);
+  }
+
+}
+
 let numOfPlayers = 1;
 const addPlayer = document.getElementById('add-player');
 addPlayer.addEventListener('click', (evt) => {
@@ -188,9 +277,6 @@ addPlayer.addEventListener('click', (evt) => {
     inputLabel.innerText = 'Choose player colors and add more players!';
     console.log('num of players', numOfPlayers);
 
-    // newPlayer.setAttribute('type', 'text');
-    // newPlayer.id = `player${numOfPlayers}-input`;
-    // playerInputs.append(newPlayer);
   }
   
 });
@@ -198,32 +284,19 @@ addPlayer.addEventListener('click', (evt) => {
 const play = document.getElementById('play');
 play.addEventListener('click', (evt) => { 
   evt.preventDefault();
-  // console.log('evtID', evt.target.id);
-    let player1;
-    let player2;
+  let width = document.getElementById('width').value;
+  let height = document.getElementById('height').value;
+
     //for loop to collect player color inputs
     let playerColors = [];
     for(let i = 1; i <= numOfPlayers; i++) {
-      // console.log('input value', input[i].value);
-      playerColors.push(new Player(document.getElementById(`color${i}`).value));
-    }
-    // if(!document.getElementById('player1-input').value) {
-    //   player1 = new Player('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
-    // }
-    // else {
-    //   player1 = new Player(document.getElementById('player1-input').value);
-    // }
+
+      let color = document.getElementById(`color${i}`);
     
-    // if(!document.getElementById('player2-input').value) {
-    //   player2 = new Player('#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'));
-    // }
-    // else {
-    //   player2 = new Player(document.getElementById('player2-input').value);
-    // }
-    // // player1 = new Player(document.getElementById('player1-input').value);
-    // // player2 = new Player(document.getElementById('player2-input').value);
-    // console.log('players', player1, player2);
+      color.style.backgroundColor = color.value;
+      !color.style.backgroundColor ? playerColors.push(new BotPlayer(width, height, '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0'))) :
 
-    new Game(...playerColors);
+      playerColors.push(new Player(color.value));
+    }
+    numOfPlayers <= 1 ? new Game(width, height, new BotPlayer(width), ...playerColors) : new Game(width, height, null, ...playerColors);
 })
-

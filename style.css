@@ -53,11 +53,13 @@ body {
     display: flex;
     flex-direction: column;
     margin: 30px;
+    align-items: baseline;
 }
 
 input {
-    padding: 5px 65px 5px 5px;
-    margin: 5px;
+    /* padding: 5px 65px 5px 5px; */
+    /* padding: 5px; */
+    /* margin: 5px; */
 }
 
 button {
@@ -65,9 +67,16 @@ button {
     width: fit-content;
     align-items: center;
     font-family: poppins;
-    color: black;
+    color: white;
+    background-color: red;
     border: none;
     padding: 4px 10px;
+    margin-top: 5px;
+}
+
+#width, #height {
+    width: 30px;
+    padding: none;
 }
 
 #play {
