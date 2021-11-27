@@ -7,6 +7,7 @@
 
 class Game {
   constructor(width, height, botPlayer, ...colors) {
+    // creates an array of players
     this.players = !botPlayer ? [...colors] : [botPlayer, ...colors];
     console.log('this.player', this.players);
     this.currPlayer = !botPlayer ? this.players[0] : this.players[1];
@@ -97,10 +98,7 @@ class Game {
     placeInTable(y, x) {
       const piece = document.createElement('div');
       piece.classList.add('played-piece');
-      // piece.classList.add(`this.currPlayer`);
-      // console.log('currplayer', this.currPlayer.color);
       piece.style.backgroundColor = this.currPlayer.color;
-      console.log('bckg color', piece.style.backgroundColor);
       const square = document.getElementById(`${y}-${x}`);
       square.append(piece);
       console.log('piece from placeInTable', piece);
@@ -115,8 +113,6 @@ class Game {
   handleClick(evt) {
 
     // get x from ID of clicked cell
-  
-    
     let x = parseInt(evt.target.id);
 
     let playerIdx = this.players.indexOf(this.currPlayer);
@@ -127,11 +123,9 @@ class Game {
       return;
     }
   
-    // place piece in board and add to HTML table
-    // TODO: add line to update in-memory board
+    // place piece in in-memory board and add to HTML table
     this.board[y][x] = this.currPlayer;
-  
-  
+
     this.placeInTable(y, x);
   
     // check for win
@@ -152,12 +146,7 @@ class Game {
       return this.endGame('It`s a tie!');
     }
 
-
-    // switch player if two or more players
-    // this.currPlayer = 
-    // playerIdx === this.players.length -1 ? this.players[0] : this.players[playerIdx + 1];
-
-    // figure out if theres bot, 
+    // change players
     this.currPlayer = this.changePlayers(this.currPlayer);
     console.log('currPlayer', this.currPlayer);
 
@@ -165,54 +154,17 @@ class Game {
 
   }
 
-  // playBot() {
-  //   if(this.currPlayer === this.botPlayer) { 
-  //     console.log('now bot is playing!');
-  //     let x = this.botPlayer.pickColForBot(this.width);
-  //     // const automateBotPlay = this.handleClick.bind((this.botPlayer.pickColForBot.bind(this.width)));
-  //     const bindThis = this.handleClick.bind(this);
-  //     const automateBotPlay = bindThis.bind(this.playBot)
-  //     console.log('automateBotPlay', automateBotPlay);
-  //     window.addEventListener('animationend', this.automateBotPlay);
-  //   }
-  //   return;
-  // }
-
-  // play bot take 2
-  // playBot() {
-  //   if(this.currPlayer === this.botPlayer) { 
-  //     console.log('now bot is playing!');
-  //     let x = this.botPlayer.pickColForBot(this.width);
-  //     // const bindThis = this.handleClick.bind(this);
-  //     window.addEventListener('animationend', () => this.handleClick(x));
-  //   }
-  //   return;
-  // }
-
-  // last try
+  // checks if it's bot's turn and automates bot click on random column once user play animation is done
   playBot() {
     window.addEventListener('animationend', () => {
       if(this.currPlayer === this.botPlayer) {
         console.log('now bot is playing!');
         let botX = this.botPlayer.pickColForBot(this.width);
         document.getElementById(botX).click();
-        // this.handleClick(x);
       }
       return;
     });
   }
-
-  // this works but it keeps playing bot
-  // playBot() {
-  //   window.addEventListener('animationend', () => {
-  //     if(this.currPlayer === this.botPlayer) {
-  //       console.log('now bot is playing!');
-  //       let x = this.botPlayer.pickColForBot(this.width);
-  //       this.handleClick(x);
-  //     }
-  //     return;
-  //   });
-  // }
 
   checkForWin() {
     // make sure win is on board
@@ -258,29 +210,33 @@ class BotPlayer {
   pickColForBot(width) {
     return Math.floor(Math.random() * width);
   }
-
 }
 
 let numOfPlayers = 1;
+
+// add players
 const addPlayer = document.getElementById('add-player');
+
 addPlayer.addEventListener('click', (evt) => {
   evt.preventDefault();
   if(evt.target.id = 'add-player') {
+
     numOfPlayers++;
+
     const newPlayer = document.createElement('input');
     newPlayer.setAttribute('type', 'text');
     newPlayer.id = `color${numOfPlayers}`;
 
     const playerInputs = document.getElementById('player-inputs');
     playerInputs.appendChild(newPlayer);
+
     const inputLabel = document.getElementById('input-label');
     inputLabel.innerText = 'Choose player colors and add more players!';
-    console.log('num of players', numOfPlayers);
 
   }
-  
 });
 
+// create player objects from user input of player numbers, player colors and board dimensions or defaults
 const play = document.getElementById('play');
 play.addEventListener('click', (evt) => { 
   evt.preventDefault();
@@ -298,5 +254,6 @@ play.addEventListener('click', (evt) => {
 
       playerColors.push(new Player(color.value));
     }
+    // checks if single player and creates new game with bot or multiplayers
     numOfPlayers <= 1 ? new Game(width, height, new BotPlayer(width), ...playerColors) : new Game(width, height, null, ...playerColors);
 })
